@@ -1,6 +1,6 @@
 # 🖼️ PNG Encoder & Decoder with Hidden Messages
 
-A **Rust** implementation of a PNG encoder and decoder with support for **hidden messages** inside PNG chunks. Originally written in **C++**, now ported to **Rust** for improved performance and safety.
+A **Rust** implementation of a PNG encoder and decoder with support for **hidden messages** inside PNG chunks. Originally written in **C++**, now ported to **Rust** as I am trying to learn a lot more about Rust. (Still in progress)
 
 ---
 
