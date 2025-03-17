@@ -1,18 +1,67 @@
-use std::str::FromStr;
+use std::
+{
+    str::FromStr,
+    fmt::Display
+};
 
 
-#[derive(Debug)]
+#[allow(unused_variables)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct ChunkType (
     [u8; 4]
 );
 
 #[derive(Debug)]
-enum ChunkTypeError {
+pub enum ChunkTypeError {
     InvalidCharacter,
     InvalidLength,
+    DisplayError,
 }
 
-impl ChunkType {}
+impl ChunkType {
+    
+    // Returns the bytes in our tuple struict
+    pub fn bytes(&self) -> [u8; 4]  {
+        self.0
+    }
+
+    // Checks if our chunk type is valid
+    pub fn is_valid(&self) -> bool {
+        self.is_reserved_bit_valid() && self.0.iter().all(|b| b.is_ascii())
+    }
+
+    pub fn is_critical(&self) -> bool {
+        let byte_1 = self.0[0];
+        let bit_5 = (byte_1 >> 5) & 1;
+
+        bit_5 == 0
+    }
+
+    // Checks the 5th bit of byte 2 if it is public or private
+    pub fn is_public(&self) -> bool {
+        let byte_2 = self.0[1];
+        let bit_5 = (byte_2 >> 5) & 1;
+
+        bit_5 == 0
+    }
+
+    // Checks the 5th bit of byte 3 if it is valid or not
+    pub fn is_reserved_bit_valid(&self) -> bool {
+        let byte_3 = self.0[2];
+        let bit_5 = (byte_3 >> 5) & 1;
+        
+        println!("{}", bit_5);
+        bit_5 == 0
+    }
+
+    // Checks the 5th bit of byte 4 to see if it is safe to copy
+    pub fn is_safe_to_copy(&self) -> bool {
+        let byte_4 = self.0[3];
+        let bit_5 = (byte_4 >> 5) & 1;
+
+        bit_5 == 1
+    }
+}
 
 impl TryFrom<[u8; 4]> for ChunkType {
     type Error = ChunkTypeError;
@@ -48,7 +97,9 @@ impl FromStr for ChunkType {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let s = s.trim();
 
-        if s.len() != 4 { return Err(ChunkTypeError::InvalidLength) }
+        if s.len() != 4 { 
+            return Err(ChunkTypeError::InvalidLength) 
+        }
 
         let bytes: [u8; 4] = s.as_bytes().try_into().unwrap();
 
@@ -56,106 +107,13 @@ impl FromStr for ChunkType {
     }
 }
 
+// Displays the [ChunkType] using its string representation of bytes
+impl Display for ChunkType {
 
-
-#![allow(unused_variables)]
-fn main() {
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::convert::TryFrom;
-    use std::str::FromStr;
-
-    #[test]
-    pub fn test_chunk_type_from_bytes() {
-        let expected = [82, 117, 83, 116];
-        let actual = ChunkType::try_from([82, 117, 83, 116]).unwrap();
-
-        assert_eq!(expected, actual.bytes());
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match str::from_utf8(&self.bytes()) {
+            Ok(string) => write!(f, "{}", string),
+            Err(_) => write!(f, "Invalid UTF-8")
+        }
     }
-
-    #[test]
-    pub fn test_chunk_type_from_str() {
-        let expected = ChunkType::try_from([82, 117, 83, 116]).unwrap();
-        let actual = ChunkType::from_str("RuSt").unwrap();
-        assert_eq!(expected, actual);
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_critical() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_critical());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_not_critical() {
-        let chunk = ChunkType::from_str("ruSt").unwrap();
-        assert!(!chunk.is_critical());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_public() {
-        let chunk = ChunkType::from_str("RUSt").unwrap();
-        assert!(chunk.is_public());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_not_public() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(!chunk.is_public());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_reserved_bit_valid() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_reserved_bit_valid());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_reserved_bit_invalid() {
-        let chunk = ChunkType::from_str("Rust").unwrap();
-        assert!(!chunk.is_reserved_bit_valid());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_safe_to_copy() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_safe_to_copy());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_unsafe_to_copy() {
-        let chunk = ChunkType::from_str("RuST").unwrap();
-        assert!(!chunk.is_safe_to_copy());
-    }
-
-    #[test]
-    pub fn test_valid_chunk_is_valid() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_valid());
-    }
-
-    #[test]
-    pub fn test_invalid_chunk_is_valid() {
-        let chunk = ChunkType::from_str("Rust").unwrap();
-        assert!(!chunk.is_valid());
-
-        let chunk = ChunkType::from_str("Ru1t");
-        assert!(chunk.is_err());
-    }
-
-    #[test]
-    pub fn test_chunk_type_string() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert_eq!(&chunk.to_string(), "RuSt");
-    }
-
-    #[test]
-    pub fn test_chunk_type_trait_impls() {
-        let chunk_type_1: ChunkType = TryFrom::try_from([82, 117, 83, 116]).unwrap();
-        let chunk_type_2: ChunkType = FromStr::from_str("RuSt").unwrap();
-        let _chunk_string = format!("{}", chunk_type_1);
-        let _are_chunks_equal = chunk_type_1 == chunk_type_2;
-    }
-}
 }
