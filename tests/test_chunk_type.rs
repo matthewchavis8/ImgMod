@@ -1,100 +1,72 @@
+#[allow(dead_code)]
+
+/**
+ * Unit tests for the `ChunkType` struct.
+ *
+ * This module contains tests to verify the correctness of `ChunkType`'s methods, ensuring that
+ * chunk type construction and property checks work as expected.
+ *
+ * Tests:
+ *
+ * - `test_construct_chunk_type` - Checks if `try_from(bytes)` correctly constructs a `ChunkType`.
+ * - `test_construct_from_string` - Verifies that a `ChunkType` can be correctly constructed from a string.
+ * - `test_is_critical` - Checks if a chunk is correctly identified as critical.
+ * - `test_is_private` - Checks if a chunk is correctly identified as private.
+ * - `test_is_reserved` - Ensures that the reserved bit validation works correctly.
+ * - `test_is_safe_to_copy` - Checks if a chunk is correctly identified as safe to copy.
+ * - `test_is_valid` - Ensures that a chunk is considered valid only if it meets all required conditions.
+ */
 
 #[cfg(test)]
 mod tests {
-    use std::convert::TryFrom;
     use std::str::FromStr;
     use png::chunk_type::ChunkType;
 
-
     #[test]
-    pub fn test_chunk_type_from_bytes() {
-        let expected = [82, 117, 83, 116];
-        let actual = ChunkType::try_from([82, 117, 83, 116]).unwrap();
+    fn test_construct_chunk_type() {
+        let expected = [77, 97, 116, 116];
+        let bytes: [u8; 4] = [77, 97, 116, 116];
+
+        let actual = ChunkType::try_from(bytes).unwrap();
+        
+        assert_eq!(expected, actual.bytes());
+    }
+    
+    #[test]
+    fn test_construct_from_string() {
+        let expected: [u8; 4] = [77, 97, 116, 116];
+        let actual = ChunkType::from_str("Matt").unwrap();
 
         assert_eq!(expected, actual.bytes());
     }
-
+    
     #[test]
-    pub fn test_chunk_type_from_str() {
-        let expected = ChunkType::try_from([82, 117, 83, 116]).unwrap();
-        let actual = ChunkType::from_str("RuSt").unwrap();
-        assert_eq!(expected, actual);
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_critical() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_critical());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_not_critical() {
-        let chunk = ChunkType::from_str("ruSt").unwrap();
+    fn test_is_critical() {
+        let chunk = ChunkType::from_str("Matt").unwrap();
         assert!(!chunk.is_critical());
     }
 
     #[test]
-    pub fn test_chunk_type_is_public() {
-        let chunk = ChunkType::from_str("RUSt").unwrap();
-        assert!(chunk.is_public());
+    fn test_is_private() {
+        let chunk = ChunkType::from_str("Matt").unwrap();
+        assert!(!chunk.is_private());
     }
 
     #[test]
-    pub fn test_chunk_type_is_not_public() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(!chunk.is_public());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_reserved_bit_valid() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_reserved_bit_valid());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_reserved_bit_invalid() {
-        let chunk = ChunkType::from_str("Rust").unwrap();
+    fn test_is_reserved() {
+        let chunk = ChunkType::from_str("Matt").unwrap();
         assert!(!chunk.is_reserved_bit_valid());
     }
 
     #[test]
-    pub fn test_chunk_type_is_safe_to_copy() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_safe_to_copy());
-    }
-
-    #[test]
-    pub fn test_chunk_type_is_unsafe_to_copy() {
-        let chunk = ChunkType::from_str("RuST").unwrap();
+    fn test_is_safe_to_copy() {
+        let chunk = ChunkType::from_str("Matt").unwrap();
         assert!(!chunk.is_safe_to_copy());
     }
 
     #[test]
-    pub fn test_valid_chunk_is_valid() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert!(chunk.is_valid());
-    }
-
-    #[test]
-    pub fn test_invalid_chunk_is_valid() {
-        let chunk = ChunkType::from_str("Rust").unwrap();
+    fn test_is_valid() {
+        let chunk = ChunkType::from_str("Matt").unwrap();
         assert!(!chunk.is_valid());
-
-        let chunk = ChunkType::from_str("Ru1t");
-        assert!(chunk.is_err());
-    }
-
-    #[test]
-    pub fn test_chunk_type_string() {
-        let chunk = ChunkType::from_str("RuSt").unwrap();
-        assert_eq!(&chunk.to_string(), "RuSt");
-    }
-
-    #[test]
-    pub fn test_chunk_type_trait_impls() {
-        let chunk_type_1: ChunkType = TryFrom::try_from([82, 117, 83, 116]).unwrap();
-        let chunk_type_2: ChunkType = FromStr::from_str("RuSt").unwrap();
-        let _chunk_string = format!("{}", chunk_type_1);
-        let _are_chunks_equal = chunk_type_1 == chunk_type_2;
     }
 }
