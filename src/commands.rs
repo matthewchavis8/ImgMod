@@ -2,6 +2,7 @@ use crate::args::{DecodeArgs, EncodeArgs, PrintArgs, RemoveArgs};
 use crate::png::Png;
 use crate::chunk::Chunk;
 
+#[derive(Debug)]
 pub enum CommandError{
     InvalidEncode,
     InvalidDecode,

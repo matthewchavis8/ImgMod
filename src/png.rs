@@ -25,7 +25,7 @@ pub enum PngError {
  * @returns chunk_by_type - Returns a reference to the first chunk with the given type.
  */
 
- 
+#[allow(dead_code)]
 impl Png {
     pub const STANDARD_HEADER: [u8; 8] = [137, 80, 78, 71, 13, 10, 26, 10];
 

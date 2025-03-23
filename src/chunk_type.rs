@@ -23,6 +23,7 @@ pub enum ChunkTypeError {
  * @returns is_safe_to_copy - Returns `true` if the chunk is safe to copy, meaning the 5th bit of the fourth byte is `1`.
  */
 
+#[allow(dead_code)]
 impl ChunkType {
     pub fn bytes(&self) -> [u8; 4] {
         self.0

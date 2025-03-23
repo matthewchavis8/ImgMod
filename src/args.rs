@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use clap::{Args, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
-pub struct PngChatArgs {
+pub struct CliArgs {
     #[clap(subcommand)]
     pub command: Commands,
 }

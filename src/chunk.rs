@@ -31,6 +31,7 @@ pub fn u8_4_from_slice(bytes: &[u8]) -> [u8; 4] {
  * @returns is_safe_to_copy - Returns `true` if the chunk is safe to copy, meaning the 5th bit of the fourth byte is `1`.
  */
 
+#[allow(dead_code)]
 impl Chunk {
     pub fn new(chunk_type: ChunkType, chunk_data: Vec<u8>) -> Chunk {
 
