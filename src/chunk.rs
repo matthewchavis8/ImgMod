@@ -69,8 +69,14 @@ impl Chunk {
         }
     }
 
-    pub fn as_bytes(&self) -> &Vec<u8> {
-        &self.chunk_data
+    pub fn as_bytes(&self) -> Vec<u8> {
+        [
+            self.chunk_length.to_be_bytes().as_ref(),
+            &self.chunk_type.bytes(),
+            &self.chunk_data,
+            self.crc.to_be_bytes().as_ref(),
+        ]
+        .concat()
     }
 
     pub fn crc(&self) -> u32 {
