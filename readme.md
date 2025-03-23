@@ -36,8 +36,73 @@ cd png-encoder-decoder
 
 # 2️⃣ Build the project
 cargo build --release
-
-# 3️⃣ Run the encoder/decoder
-cargo run -- [options] <input_file>
 ```
 
+Make sure the compiled binary is accessible from anywhere:
+```sh
+cp ./target/release/pngMessages ~/.cargo/bin
+```
+Or add the path to your `$PATH` environment variable.
+
+---
+
+## 🧪 CLI Examples
+
+### 📅 Encode a Hidden Message
+Embed a secret message into a PNG file using a custom chunk type:
+
+```sh
+pngMessages encode ./Gengar.png maTt "Hello World"
+```
+
+This adds a custom chunk `maTt` with the message `Hello World` into the PNG file.
+you can use any chunk name though along if it is valid like ruSt or RuSt or even just doOr along if it is a valid Chunk Type
+---
+
+### 🔍 Print All Chunks
+List all the chunks currently inside the PNG file:
+
+```sh
+pngMessages print ./Gengar.png
+```
+**Example Output:**
+```
+File: ./Gengar.png, Size: 33054
+  chunk#0{ chunk_type: IHDR, data_length: 13}
+  chunk#1{ chunk_type: iCCP, data_length: 2457}
+  ...
+  chunk#13{ chunk_type: maTt, data_length: 11}
+```
+
+---
+
+### 🔓 Decode a Message
+Read a message from a custom chunk type:
+
+```sh
+pngMessages decode ./Gengar.png maTt
+```
+**Example Output:**
+```
+msg: Hello World
+```
+
+---
+
+### ❌ Remove a Chunk
+Remove a chunk with a specific type from the PNG file:
+
+```sh
+pngMessages remove ./Gengar.png maTt
+```
+This deletes the `maTt` chunk (and the message) from the image.
+
+---
+
+### 🔀 After Removal 
+```sh
+pngMessages print ./Gengar.png
+```
+You’ll notice the custom chunk is no longer present in the output.
+
+---
