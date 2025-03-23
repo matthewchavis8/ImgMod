@@ -1,5 +1,5 @@
 use std::{fmt::Display, str::{from_utf8, Utf8Error}};
-
+use std::str::FromStr;
 use crate::chunk_type::ChunkType;
 use crc::{Crc, CRC_32_ISO_HDLC};
 
@@ -81,6 +81,13 @@ impl Chunk {
 
     pub fn crc(&self) -> u32 {
         self.crc
+    }
+
+    pub fn from_strings(chunk_type: &str, data: &str) -> Result<Chunk, ChunkError> {
+        let chunk_type = ChunkType::from_str(chunk_type).map_err(|_| ChunkError::ConversionError)?;
+        let data: Vec<u8> = data.bytes().collect();
+
+        Ok(Chunk::new(chunk_type, data))
     }
     
 }

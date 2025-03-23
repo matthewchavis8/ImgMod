@@ -1,6 +1,7 @@
 use crate::chunk::Chunk;
 use std::fmt::Display;
-
+use std::fs;
+use std::path::Path;
 pub struct Png {
     header: [u8; 8],
     chunks: Vec<Chunk>
@@ -70,6 +71,18 @@ impl Png {
                 .collect(),
         ]
         .concat()
+    }
+
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Png, PngError> {
+        let file = fs::read(path)
+            .map_err(|_| PngError::InvalidChunk)?;
+
+        Ok(file.as_slice().try_into()?)
+    }
+
+    pub fn write_file<P: AsRef<Path>>(&self, path: P) -> Result<(), PngError> {
+        let _ = fs::write(path, self.as_bytes()).map_err(|_| PngError::InvalidChunk);
+        Ok(())
     }
 }
 
