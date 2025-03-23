@@ -1,6 +1,6 @@
-use std::{fmt::Display, io::Read, str::{from_utf8, Utf8Error}};
+use std::{fmt::Display, str::{from_utf8, Utf8Error}};
 
-use crate::chunk_type::{self, ChunkType};
+use crate::chunk_type::ChunkType;
 use crc::{Crc, CRC_32_ISO_HDLC};
 
 pub struct Chunk {
@@ -18,6 +18,18 @@ pub enum ChunkError {
 pub fn u8_4_from_slice(bytes: &[u8]) -> [u8; 4] {
     bytes.try_into().expect("error converting")
 }
+
+/**
+ * Provides methods for working with PNG chunk type codes.
+ *
+ * @returns bytes - Returns the four-byte array representing the chunk type.
+ * @returns is_valid - Returns `true` if the chunk type is valid, meaning the reserved bit is correct 
+ *                   and all bytes are ASCII characters.
+ * @returns is_critical - Returns `true` if the chunk is critical, meaning its first byte has the 5th bit set to `0`.
+ * @returns is_private - Returns `true` if the chunk is private, meaning its second byte has the 5th bit set to `1`.
+ * @returns is_reserved_bit_valid - Returns `true` if the reserved bit (5th bit of the third byte) is `0` (must always be `0` for validity).
+ * @returns is_safe_to_copy - Returns `true` if the chunk is safe to copy, meaning the 5th bit of the fourth byte is `1`.
+ */
 
 impl Chunk {
     pub fn new(chunk_type: ChunkType, chunk_data: Vec<u8>) -> Chunk {

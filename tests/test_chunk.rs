@@ -1,6 +1,23 @@
+#[allow(dead_code)]
+/**
+ * Unit tests for the `Chunk` struct.
+ *
+ * This module contains tests verifying the correctness of the `Chunk` struct's implementation,
+ * including functionality such as length computation, type extraction, string conversion of
+ * chunk data, and CRC validation. It ensures that chunks are correctly constructed and that their
+ * properties are accurately reported.
+ *
+ * Tests:
+ * - `test_new_chunk` - Validates that a new chunk is constructed with the correct length and CRC.
+ * - `test_chunk_length` - Checks that the chunk length is computed as expected.
+ * - `test_chunk_type` - Ensures that the chunk type is correctly returned as a string.
+ * - `test_chunk_string` - Verifies that the chunk data can be converted into the correct string.
+ * - `test_chunk_crc` - Confirms that the computed CRC for the chunk is accurate.
+ * - `test_valid_chunk_from_bytes` - Tests that a valid chunk can be created from a raw byte array.
+ * - `test_chunk_trait_impls` - Validates trait implementations (such as `Display`) for the `Chunk` struct.
+ */
 #[cfg(test)]
 mod tests {
-    use super::*;
     use png::chunk::Chunk;
     use png::chunk_type::ChunkType;
     use std::str::FromStr;
