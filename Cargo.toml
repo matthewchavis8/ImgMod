@@ -8,5 +8,5 @@ clap = {version = "4.5.32", features = ["derive"]}
 crc = "3.2.1"
 
 [[bin]]
-name = "pngSecretMessages"
+name = "pngMessages"
 path = "src/main.rs"
