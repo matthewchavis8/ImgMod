@@ -40,7 +40,7 @@ impl Png {
         self.chunks.push(chunk);
     }
 
-    pub fn remove_first_chunk(&mut self, chunk_type: &str) -> Result<Chunk, PngError> {
+    pub fn remove_chunk(&mut self, chunk_type: &str) -> Result<Chunk, PngError> {
         if let Some(idx) = self.chunks
             .iter()
             .position(|c| c.chunk_type().to_string() == chunk_type) {
@@ -84,6 +84,8 @@ impl Png {
         let _ = fs::write(path, self.as_bytes()).map_err(|_| PngError::InvalidChunk);
         Ok(())
     }
+
+    
 }
 
 impl TryFrom<&[u8]> for Png {

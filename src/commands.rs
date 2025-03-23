@@ -1,10 +1,11 @@
-use crate::args::{DecodeArgs, EncodeArgs};
+use crate::args::{DecodeArgs, EncodeArgs, PrintArgs, RemoveArgs};
 use crate::png::Png;
 use crate::chunk::Chunk;
 
 pub enum CommandError{
     InvalidEncode,
     InvalidDecode,
+    InvalidRemove
 }
 
 pub fn encode(args: &EncodeArgs) -> Result<(),  CommandError> {
@@ -30,3 +31,29 @@ pub fn decode(args: &DecodeArgs) -> Result<(), CommandError> {
     }
 }
 
+pub fn remove(args: &RemoveArgs) -> Result<(), CommandError> {
+    let mut png = Png::from_file(&args.file_path).unwrap();
+    png.remove_chunk(&args.chunk_type).unwrap();
+    
+    png.write_file(&args.file_path).map_err(|_| CommandError::InvalidRemove)
+}
+
+pub fn print_chunks(args: &PrintArgs) -> Result<(), CommandError> {
+    let png = Png::from_file(&args.file_path).unwrap();
+    println!(
+        "File: {}, Size: {}",
+        &args.file_path.display(),
+        png.as_bytes().len()
+    );
+
+    for (i, chunk) in png.chunks().iter().enumerate() {
+        println!(
+            "  chunk#{}{{ chunk_type: {}, data_length: {}}}",
+            i,
+            chunk.chunk_type(),
+            chunk.length(),
+        );
+    }
+
+    Ok(())
+}
