@@ -55,6 +55,5 @@ pub fn print_chunks(args: &PrintArgs) -> Result<(), CommandError> {
             chunk.length(),
         );
     }
-
     Ok(())
 }

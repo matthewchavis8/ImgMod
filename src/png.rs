@@ -23,6 +23,8 @@ pub enum PngError {
  * @returns append_chunk - Appends a new chunk to the PNG image.
  * @returns remove_first_chunk - Removes and returns the first chunk with the specified type.
  * @returns chunk_by_type - Returns a reference to the first chunk with the given type.
+ * @returns from_file returns the file as a bytes
+ * @returns write_file writes bytes into the file
  */
 
 #[allow(dead_code)]
