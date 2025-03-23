@@ -1,5 +1,5 @@
 use std::{fmt::Display, str::{from_utf8, Utf8Error}};
-
+use std::str::FromStr;
 use crate::chunk_type::ChunkType;
 use crc::{Crc, CRC_32_ISO_HDLC};
 
@@ -31,6 +31,7 @@ pub fn u8_4_from_slice(bytes: &[u8]) -> [u8; 4] {
  * @returns is_safe_to_copy - Returns `true` if the chunk is safe to copy, meaning the 5th bit of the fourth byte is `1`.
  */
 
+#[allow(dead_code)]
 impl Chunk {
     pub fn new(chunk_type: ChunkType, chunk_data: Vec<u8>) -> Chunk {
 
@@ -81,6 +82,13 @@ impl Chunk {
 
     pub fn crc(&self) -> u32 {
         self.crc
+    }
+
+    pub fn from_strings(chunk_type: &str, data: &str) -> Result<Chunk, ChunkError> {
+        let chunk_type = ChunkType::from_str(chunk_type).map_err(|_| ChunkError::ConversionError)?;
+        let data: Vec<u8> = data.bytes().collect();
+
+        Ok(Chunk::new(chunk_type, data))
     }
     
 }
