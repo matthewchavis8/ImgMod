@@ -11,6 +11,20 @@ pub enum PngError {
     InvalidSignature,
     InvalidChunk,
 }
+
+/**
+ * Provides methods for working with PNG images.
+ *
+ * @returns header - Returns the fixed 8-byte PNG signature.
+ * @returns chunks - Returns the vector of chunks that make up the PNG image.
+ * @returns as_bytes - Returns a `Vec<u8>` representing the complete PNG file (header concatenated with all chunks).
+ * @returns from_chunks - Constructs a PNG image from a vector of chunks.
+ * @returns append_chunk - Appends a new chunk to the PNG image.
+ * @returns remove_first_chunk - Removes and returns the first chunk with the specified type.
+ * @returns chunk_by_type - Returns a reference to the first chunk with the given type.
+ */
+
+ 
 impl Png {
     pub const STANDARD_HEADER: [u8; 8] = [137, 80, 78, 71, 13, 10, 26, 10];
 

@@ -1,4 +1,36 @@
 #![allow(unused_variables)]
+
+/**
+ * Integration tests for the PNG functionality.
+ *
+ * This module tests the core functionality of the PNG library, including:
+ *
+ * - Construction of a PNG object from individual chunks.
+ * - Conversion from raw byte slices to a PNG object.
+ * - Error handling for invalid PNG signatures and malformed chunks.
+ * - Utility methods for working with chunks (listing, retrieving by type,
+ *   appending, and removing).
+ * - Verification that the byte representation of a PNG object matches the original data.
+ * - Validation of trait implementations (such as `Display`) for both `Chunk` and `Png`.
+ *
+ * Helper Functions:
+ * - `testing_chunks()`: Returns a sample vector of chunks used for testing.
+ * - `testing_png()`: Constructs a PNG from sample chunks.
+ * - `chunk_from_strings()`: Creates a `Chunk` from a chunk type string and a data string.
+ *
+ * Test Cases:
+ * - `test_from_chunks()`: Ensures that a PNG created from chunks has the expected number of chunks.
+ * - `test_valid_from_bytes()`: Verifies that a valid PNG can be constructed from raw bytes.
+ * - `test_invalid_header()`: Ensures that a PNG with an invalid header fails to parse.
+ * - `test_invalid_chunk()`: Confirms that a malformed chunk causes an error during PNG construction.
+ * - `test_list_chunks()`: Validates that the PNG's chunk list returns the correct number of chunks.
+ * - `test_chunk_by_type()`: Checks that a chunk can be correctly retrieved by its type.
+ * - `test_append_chunk()`: Tests that appending a chunk to a PNG works as expected.
+ * - `test_remove_first_chunk()`: Tests that removing the first chunk of a given type works correctly.
+ * - `test_png_from_image_file()`: Verifies that a PNG can be constructed from raw image file bytes.
+ * - `test_as_bytes()`: Confirms that the PNG's byte representation matches the original data.
+ * - `test_png_trait_impls()`: Validates that trait implementations (e.g. `Display`) for PNG work correctly.
+ */
 #[cfg(test)]
 mod tests {
     use png::chunk::Chunk;
