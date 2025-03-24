@@ -1,5 +1,5 @@
-use crate::chunk::Chunk;
-use std::fmt::Display;
+use crate::chunk::{Chunk, ChunkError};
+use std::fmt::{self, Display};
 use std::fs;
 use std::path::Path;
 pub struct Png {
@@ -11,6 +11,8 @@ pub struct Png {
 pub enum PngError {
     InvalidSignature,
     InvalidChunk,
+    UnexpectedEOF,
+    Chunk(ChunkError)
 }
 
 /**
@@ -83,7 +85,7 @@ impl Png {
     }
 
     pub fn write_file<P: AsRef<Path>>(&self, path: P) -> Result<(), PngError> {
-        let _ = fs::write(path, self.as_bytes()).map_err(|_| PngError::InvalidChunk);
+        let _ = fs::write(path, self.as_bytes()).map_err(|_| PngError::InvalidChunk)?;
         Ok(())
     }
 
@@ -98,17 +100,27 @@ impl TryFrom<&[u8]> for Png {
         if bytes.len() < 8  || !bytes.starts_with(&Png::STANDARD_HEADER) {
             return Err(PngError::InvalidSignature);
         }
+
         let mut chunks: Vec<Chunk> = Vec::new();
         let mut cursor = 8;
 
         while cursor < bytes.len() {
-            let length = u32::from_be_bytes(bytes[cursor..cursor + 4].try_into().unwrap())
+
+            if cursor + 4 > bytes.len() {
+                return Err(PngError::UnexpectedEOF);
+            }
+
+            let length = u32::from_be_bytes(bytes[cursor..cursor + 4].try_into()?)
                 as usize;
 
             let total_chunk_len = 4 + 4 + length + 4;
 
+            if cursor + total_chunk_len > bytes.len() {
+                return Err(PngError::UnexpectedEOF);
+            }
+
             let chunk_bytes = &bytes[cursor..cursor + total_chunk_len];
-            let chunk = Chunk::try_from(chunk_bytes).unwrap();
+            let chunk = Chunk::try_from(chunk_bytes)?;
             chunks.push(chunk);
 
             cursor += total_chunk_len;
@@ -116,7 +128,7 @@ impl TryFrom<&[u8]> for Png {
 
         Ok(Png{
             header: Png::STANDARD_HEADER,
-            chunks: chunks,
+            chunks,
         })
     }
 }
@@ -133,3 +145,23 @@ impl Display for Png {
         Ok(())
     }
 }
+
+impl From<std::array::TryFromSliceError> for PngError {
+    fn from(_: std::array::TryFromSliceError) -> Self {
+        PngError::UnexpectedEOF
+    }
+}
+
+impl From<ChunkError> for PngError {
+    fn from(e: ChunkError) -> Self {
+        PngError::Chunk(e)
+    }
+}
+
+impl fmt::Display for PngError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl std::error::Error for PngError {}
