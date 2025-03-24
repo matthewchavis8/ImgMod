@@ -84,7 +84,7 @@ impl FromStr for ChunkType {
             .try_into()
             .map_err(|_| ChunkTypeError::InvalidString)?;
 
-        Ok(ChunkType::try_from(bytes).unwrap())
+        Ok(ChunkType::try_from(bytes)?)
     }
 }
 
