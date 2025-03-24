@@ -1,5 +1,5 @@
 use crate::chunk::{Chunk, ChunkError};
-use std::fmt::Display;
+use std::fmt::{self, Display};
 use std::fs;
 use std::path::Path;
 pub struct Png {
@@ -85,7 +85,7 @@ impl Png {
     }
 
     pub fn write_file<P: AsRef<Path>>(&self, path: P) -> Result<(), PngError> {
-        let _ = fs::write(path, self.as_bytes()).map_err(|_| PngError::InvalidChunk);
+        let _ = fs::write(path, self.as_bytes()).map_err(|_| PngError::InvalidChunk)?;
         Ok(())
     }
 
@@ -157,3 +157,11 @@ impl From<ChunkError> for PngError {
         PngError::Chunk(e)
     }
 }
+
+impl fmt::Display for PngError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl std::error::Error for PngError {}

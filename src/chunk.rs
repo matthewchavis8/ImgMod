@@ -1,4 +1,4 @@
-use std::{fmt::Display, str::{from_utf8, Utf8Error}};
+use std::{fmt::{self, Display}, str::{from_utf8, Utf8Error}};
 use std::str::FromStr;
 use crate::chunk_type::ChunkType;
 use crc::{Crc, CRC_32_ISO_HDLC};
@@ -131,3 +131,11 @@ impl Display for Chunk {
         )
     }
 }
+
+impl fmt::Display for ChunkError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl std::error::Error for ChunkError {}
