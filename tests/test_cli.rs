@@ -1,6 +1,7 @@
 #[cfg(test)] 
 mod tests {
     use assert_cmd::Command;
+    use serial_test::serial;
 
     fn remove_test_chunks() {
         let mut cmd = Command::cargo_bin("pngMessages")
@@ -10,6 +11,7 @@ mod tests {
     }
     
     #[test]
+    #[serial]
     fn test_print() {
         let mut cmd = Command::cargo_bin("pngMessages")
             .unwrap();
@@ -34,6 +36,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_encode() {
 
         let encode_cli = |()| {
@@ -73,6 +76,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_decode() {
         let encode_cli = |()| {
             let mut cmd = Command::cargo_bin("pngMessages")
@@ -98,6 +102,7 @@ mod tests {
     }
     
     #[test]
+    #[serial]
     fn test_remove() {
         let encode_cli = |()| {
             let mut cmd = Command::cargo_bin("pngMessages")
