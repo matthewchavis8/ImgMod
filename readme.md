@@ -52,7 +52,7 @@ Or add the path to your `$PATH` environment variable.
 Embed a secret message into a PNG file using a custom chunk type:
 
 ```sh
-pngMessages encode ./Gengar.png maTt "Hello World"
+ImgMod encode ./Gengar.png maTt "Hello World"
 ```
 
 This adds a custom chunk `maTt` with the message `Hello World` into the PNG file.
@@ -63,7 +63,7 @@ you can use any chunk name though along if it is valid like ruSt or RuSt or even
 List all the chunks currently inside the PNG file:
 
 ```sh
-pngMessages print ./Gengar.png
+ImgMod print ./Gengar.png
 ```
 **Example Output:**
 ```
@@ -80,7 +80,7 @@ File: ./Gengar.png, Size: 33054
 Read a message from a custom chunk type:
 
 ```sh
-pngMessages decode ./Gengar.png maTt
+ImgMod decode ./Gengar.png maTt
 ```
 **Example Output:**
 ```
@@ -93,7 +93,7 @@ msg: Hello World
 Remove a chunk with a specific type from the PNG file:
 
 ```sh
-pngMessages remove ./Gengar.png maTt
+ImgMod remove ./Gengar.png maTt
 ```
 This deletes the `maTt` chunk (and the message) from the image.
 
@@ -101,7 +101,7 @@ This deletes the `maTt` chunk (and the message) from the image.
 
 ### 🔀 After Removal 
 ```sh
-pngMessages print ./Gengar.png
+ImgMod print ./Gengar.png
 ```
 You’ll notice the custom chunk is no longer present in the output.
 
