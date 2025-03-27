@@ -1,6 +1,6 @@
-use crate::args::{DecodeArgs, EncodeArgs, PrintArgs, RemoveArgs};
-use crate::png::{Png, PngError};
-use crate::chunk::Chunk;
+use crate::args::args::{DecodeArgs, EncodeArgs, PrintArgs, RemoveArgs};
+use crate::png::image::{Png, PngError};
+use crate::png::chunk::Chunk;
 
 pub fn encode(args: &EncodeArgs) -> Result<(),  Box<dyn std::error::Error>> {
     let mut png = Png::from_file(&args.file_path)?;

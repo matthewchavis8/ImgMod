@@ -1,6 +1,6 @@
 use std::{fmt::{self, Display}, str::{from_utf8, Utf8Error}};
 use std::str::FromStr;
-use crate::chunk_type::ChunkType;
+use crate::png::chunk_type::ChunkType;
 use crc::{Crc, CRC_32_ISO_HDLC};
 
 pub struct Chunk {

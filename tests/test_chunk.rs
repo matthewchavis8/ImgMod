@@ -18,8 +18,8 @@
  */
 #[cfg(test)]
 mod tests {
-    use png::chunk::Chunk;
-    use png::chunk_type::ChunkType;
+    use imgmod::png::chunk::Chunk;
+    use imgmod::png::chunk_type::ChunkType;
     use std::str::FromStr;
 
     fn testing_chunk() -> Chunk {

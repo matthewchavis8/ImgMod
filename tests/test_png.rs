@@ -33,9 +33,9 @@
  */
 #[cfg(test)]
 mod tests {
-    use png::chunk::Chunk;
-    use png::chunk_type::ChunkType;
-    use png::png::Png;
+    use imgmod::png::chunk::Chunk;
+    use imgmod::png::chunk_type::ChunkType;
+    use imgmod::png::image::Png;
     
     use std::convert::TryFrom;
 

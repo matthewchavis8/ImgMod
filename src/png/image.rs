@@ -1,4 +1,4 @@
-use crate::chunk::{Chunk, ChunkError};
+use crate::png::chunk::{Chunk, ChunkError};
 use std::fmt::{self, Display};
 use std::fs;
 use std::path::Path;
