@@ -1,15 +1,15 @@
-# 🖼️ PNG Encoder & Decoder with Hidden Messages
+# 🖼️ Image Encoder & Decoder with Hidden Messages
 
-A **Rust** implementation of a PNG encoder and decoder with support for **hidden messages** inside PNG chunks. Originally written in **C++**, now ported to **Rust**. (Still in progress)
+A **Rust** implementation of a Image encoder and decoder with support for **hidden messages** inside PNG chunks so far. Originally written in **C++**, now ported to **Rust**. (Still in progress)
 
 ---
 
 ## 🚀 Features
 
-- 📂 **Read & write PNG files** with chunk-level manipulation.
-- 🧩 **Extract and modify PNG chunks dynamically.**
-- 🔒 **Embed and retrieve secret messages hidden in PNG chunks.**
-- ✅ **Validate chunk types** to ensure they conform to PNG specifications.
+- 📂 **Read & write image files** with chunk-level manipulation.
+- 🧩 **Extract and modify image chunks dynamically.**
+- 🔒 **Embed and retrieve secret messages hidden in image chunks.**
+- ✅ **Validate chunk types** to ensure they conform to image specifications.
 - 🛠️ **Built with Rust** for performance and safety.
 
 ---
