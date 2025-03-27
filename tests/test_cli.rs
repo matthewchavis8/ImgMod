@@ -63,11 +63,9 @@ mod tests {
     fn test_encode() {
 
         let check_chunks_after_chunk_added = |()| {
-            let mut cmd = Command::cargo_bin("ImgMod")
-            .unwrap();
-            cmd.args(&["print", "./images/test_image.png"]);
+            let assert = TestCli::print_chunks();
 
-            cmd.assert()
+            assert
             .stdout(
   "File: ./images/test_image.png, Size: 66227
   chunk#0{ chunk_type: IHDR, data_length: 13}
@@ -83,7 +81,6 @@ mod tests {
   chunk#10{ chunk_type: IEND, data_length: 0}
   chunk#11{ chunk_type: maTt, data_length: 11}\n"
             );
-            cmd.assert().success();
         };
         TestCli::encode();
         check_chunks_after_chunk_added(());
