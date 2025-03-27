@@ -31,8 +31,8 @@ Get started by cloning and running the project.
 
 ```sh
 # 1️⃣ Clone the repository
-git clone https://github.com/yourusername/png-encoder-decoder.git
-cd png-encoder-decoder
+git clone https://github.com/yourusername/ImgMod.git
+cd ImgMod
 
 # 2️⃣ Build the project
 cargo build --release
