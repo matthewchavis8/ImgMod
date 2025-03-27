@@ -64,9 +64,7 @@ mod tests {
 
         let check_chunks_after_chunk_added = |()| {
             let assert = TestCli::print_chunks();
-
-            assert
-            .stdout(
+            assert.stdout(
   "File: ./images/test_image.png, Size: 66227
   chunk#0{ chunk_type: IHDR, data_length: 13}
   chunk#1{ chunk_type: cHRM, data_length: 32}
