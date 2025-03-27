@@ -1,14 +1,11 @@
 
 mod args;
-mod chunk;
-mod chunk_type;
-mod commands;
 mod png;
 
-use args::CliArgs;
-use args::Commands;
+use crate::args::
+args::{CliArgs, Commands};
+use crate::args::commands::{decode, encode, remove, print_chunks};
 use clap::Parser;
-use commands::{decode, encode, remove, print_chunks};
 
 pub type Error = Box<dyn std::error::Error>;
 pub type Result<T> = std::result::Result<T, Error>;

@@ -1,15 +1,15 @@
-# 🖼️ PNG Encoder & Decoder with Hidden Messages
+# 🖼️ Image Encoder & Decoder with Hidden Messages
 
-A **Rust** implementation of a PNG encoder and decoder with support for **hidden messages** inside PNG chunks. Originally written in **C++**, now ported to **Rust**. (Still in progress)
+A **Rust** implementation of a Image encoder and decoder with support for **hidden messages** inside PNG chunks (so far). Originally written in **C++**, now ported to **Rust**. (Still in progress)
 
 ---
 
 ## 🚀 Features
 
-- 📂 **Read & write PNG files** with chunk-level manipulation.
-- 🧩 **Extract and modify PNG chunks dynamically.**
-- 🔒 **Embed and retrieve secret messages hidden in PNG chunks.**
-- ✅ **Validate chunk types** to ensure they conform to PNG specifications.
+- 📂 **Read & write image files** with chunk-level manipulation.
+- 🧩 **Extract and modify image chunks dynamically.**
+- 🔒 **Embed and retrieve secret messages hidden in image chunks.**
+- ✅ **Validate chunk types** to ensure they conform to image specifications.
 - 🛠️ **Built with Rust** for performance and safety.
 
 ---
@@ -31,8 +31,8 @@ Get started by cloning and running the project.
 
 ```sh
 # 1️⃣ Clone the repository
-git clone https://github.com/yourusername/png-encoder-decoder.git
-cd png-encoder-decoder
+git clone https://github.com/yourusername/ImgMod.git
+cd ImgMod
 
 # 2️⃣ Build the project
 cargo build --release
@@ -40,7 +40,7 @@ cargo build --release
 
 Make sure the compiled binary is accessible from anywhere:
 ```sh
-cp ./target/release/pngMessages ~/.cargo/bin
+cp ./target/release/ImgMod ~/.cargo/bin
 ```
 Or add the path to your `$PATH` environment variable.
 
@@ -52,7 +52,7 @@ Or add the path to your `$PATH` environment variable.
 Embed a secret message into a PNG file using a custom chunk type:
 
 ```sh
-pngMessages encode ./Gengar.png maTt "Hello World"
+ImgMod encode ./images/Gengar.png maTt "Hello World"
 ```
 
 This adds a custom chunk `maTt` with the message `Hello World` into the PNG file.
@@ -63,11 +63,11 @@ you can use any chunk name though along if it is valid like ruSt or RuSt or even
 List all the chunks currently inside the PNG file:
 
 ```sh
-pngMessages print ./Gengar.png
+ImgMod print ./images/Gengar.png
 ```
 **Example Output:**
 ```
-File: ./Gengar.png, Size: 33054
+File: ./images/Gengar.png, Size: 33054
   chunk#0{ chunk_type: IHDR, data_length: 13}
   chunk#1{ chunk_type: iCCP, data_length: 2457}
   ...
@@ -80,7 +80,7 @@ File: ./Gengar.png, Size: 33054
 Read a message from a custom chunk type:
 
 ```sh
-pngMessages decode ./Gengar.png maTt
+ImgMod decode ./images/Gengar.png maTt
 ```
 **Example Output:**
 ```
@@ -93,7 +93,7 @@ msg: Hello World
 Remove a chunk with a specific type from the PNG file:
 
 ```sh
-pngMessages remove ./Gengar.png maTt
+ImgMod remove ./images/Gengar.png maTt
 ```
 This deletes the `maTt` chunk (and the message) from the image.
 
@@ -101,7 +101,7 @@ This deletes the `maTt` chunk (and the message) from the image.
 
 ### 🔀 After Removal 
 ```sh
-pngMessages print ./Gengar.png
+ImgMod print ./images/Gengar.png
 ```
 You’ll notice the custom chunk is no longer present in the output.
 

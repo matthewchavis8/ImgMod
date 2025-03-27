@@ -20,7 +20,7 @@
 #[cfg(test)]
 mod tests {
     use std::str::FromStr;
-    use png::chunk_type::ChunkType;
+    use imgmod::png::chunk_type::ChunkType;
 
     #[test]
     fn test_construct_chunk_type() {

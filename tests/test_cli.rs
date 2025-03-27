@@ -9,17 +9,17 @@ mod tests {
         pub fn remove_chunks() {
             let mut cmd = Command::cargo_bin("pngMessages")
                 .unwrap();
-            cmd.args(&["remove", "./test_image.png", "maTt"]);
+            cmd.args(&["remove", "./images/test_image.png", "maTt"]);
             cmd.assert().success();
         }
 
         pub fn check_normal_chunks() {
             let mut cmd = Command::cargo_bin("pngMessages")
                 .unwrap();
-            cmd.args(&["print", "./test_image.png"]);
+            cmd.args(&["print", "./images/test_image.png"]);
             cmd.assert()
             .stdout(
-  "File: ./test_image.png, Size: 66204
+  "File: ./images/test_image.png, Size: 66204
   chunk#0{ chunk_type: IHDR, data_length: 13}
   chunk#1{ chunk_type: cHRM, data_length: 32}
   chunk#2{ chunk_type: PLTE, data_length: 765}
@@ -38,14 +38,14 @@ mod tests {
         pub fn encode() {
             let mut cmd = Command::cargo_bin("pngMessages")
             .unwrap();
-            cmd.args(&["encode", "./test_image.png", "maTt", "Hello Matt!"]);   
+            cmd.args(&["encode", "./images/test_image.png", "maTt", "Hello Matt!"]);   
             cmd.assert().success();
         }
 
         pub fn decode() {
             let mut cmd = Command::cargo_bin("pngMessages")
             .unwrap();
-            cmd.args(&["decode", "./test_image.png", "maTt"]);   
+            cmd.args(&["decode", "./images/test_image.png", "maTt"]);   
             
             cmd.assert()
                 .stdout("msg: Hello Matt!\n");
@@ -66,11 +66,11 @@ mod tests {
         let check_chunks_after_chunk_added = |()| {
             let mut cmd = Command::cargo_bin("pngMessages")
             .unwrap();
-            cmd.args(&["print", "./test_image.png"]);
+            cmd.args(&["print", "./images/test_image.png"]);
 
             cmd.assert()
             .stdout(
-  "File: ./test_image.png, Size: 66227
+  "File: ./images/test_image.png, Size: 66227
   chunk#0{ chunk_type: IHDR, data_length: 13}
   chunk#1{ chunk_type: cHRM, data_length: 32}
   chunk#2{ chunk_type: PLTE, data_length: 765}
