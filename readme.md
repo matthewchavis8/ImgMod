@@ -40,7 +40,7 @@ cargo build --release
 
 Make sure the compiled binary is accessible from anywhere:
 ```sh
-cp ./target/release/pngMessages ~/.cargo/bin
+cp ./target/release/ImgMod ~/.cargo/bin
 ```
 Or add the path to your `$PATH` environment variable.
 
