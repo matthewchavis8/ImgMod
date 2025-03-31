@@ -2,6 +2,7 @@
 mod tests {
     use assert_cmd::Command;
     use serial_test::serial;
+    use tempfile::tempdir;
 
     struct TestCli;
 
@@ -100,5 +101,19 @@ mod tests {
         TestCli::remove_chunks();
         TestCli::print_chunks();
         TestCli::remove_chunks();
+    }
+
+    #[test]
+    fn test_delete_file() {
+
+        let dir = tempdir().expect("Error creating temporary directory");
+        let file_path = dir.path().join("test.png");
+    
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(&["manage", "delete", file_path.to_str().unwrap()]);
+        cmd.assert().success();
+
+        assert!(!file_path.exists());
     }
 }
