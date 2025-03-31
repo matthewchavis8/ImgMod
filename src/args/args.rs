@@ -53,7 +53,7 @@ pub struct ManageArgs {
 #[derive(Debug, Subcommand)]
 pub enum ManageCommands {
     Delete(DeleteArgs),
-    DownLoad(DownloadFromInternetArgs),
+    Download(DownloadFromInternetArgs),
     Convert(ConvertArgs),
 }
 
