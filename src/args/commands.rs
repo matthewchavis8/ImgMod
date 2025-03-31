@@ -1,6 +1,14 @@
-use crate::args::args::{DecodeArgs, EncodeArgs, PrintArgs, RemoveArgs};
+use std::fs;
+
+use crate::args::args::
+{DecodeArgs, 
+EncodeArgs, 
+PrintArgs, 
+RemoveArgs};
 use crate::png::image::{Png, PngError};
 use crate::png::chunk::Chunk;
+
+use super::args::DeleteArgs;
 
 pub fn encode(args: &EncodeArgs) -> Result<(),  Box<dyn std::error::Error>> {
     let mut png = Png::from_file(&args.file_path)?;
@@ -53,5 +61,18 @@ pub fn print_chunks(args: &PrintArgs) -> Result<(), Box<dyn std::error::Error>> 
             chunk.length(),
         );
     }
+    Ok(())
+}
+
+pub fn delete_file(args: &DeleteArgs) -> Result<(), Box<dyn std::error::Error>> {
+    let file = &args.file_path;
+
+    if file.exists() {
+        fs::remove_file(file)?;
+        println!("Deleted: {:?}", file);
+    } else {
+        println!("No file at path: {:?}", file);
+    }
+
     Ok(())
 }

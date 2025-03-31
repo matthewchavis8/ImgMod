@@ -3,8 +3,9 @@ mod args;
 mod png;
 
 use crate::args::
-args::{CliArgs, Commands};
-use crate::args::commands::{decode, encode, remove, print_chunks};
+args::{CliArgs, Commands, ManageCommands};
+
+use crate::args::commands::{decode, encode, remove, print_chunks, delete_file};
 use clap::Parser;
 
 pub type Error = Box<dyn std::error::Error>;
@@ -32,6 +33,17 @@ fn main() {
         Commands::Print(args) => {
             if let Err(e) = print_chunks(&args) {
                 eprintln!("Print error: {:?}", e);
+            }
+        }
+        Commands::Manage(manage_args) => {
+
+            match manage_args.manage_command {
+                ManageCommands::Delete(args) => {
+                    if let Err(e) = delete_file(&args) {
+                        eprintln!("Print error: {:?}", e);
+                    }
+                }
+                _ => {}
             }
         }
     }
