@@ -40,7 +40,7 @@ cargo build --release
 
 Make sure the compiled binary is accessible from anywhere:
 ```sh
-cp ./target/release/ImgMod ~/.cargo/bin
+cargo install --path .
 ```
 Or add the path to your `$PATH` environment variable.
 
