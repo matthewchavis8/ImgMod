@@ -83,5 +83,4 @@ pub struct ConvertArgs {
     pub convert_to_webp: bool,
 
     pub input_path: PathBuf,
-    pub output_path: PathBuf
 }

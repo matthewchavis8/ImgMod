@@ -135,13 +135,18 @@ pub fn convert_file(args: &ConvertArgs) -> Result<(), CommandError> {
         .map_err(|_| CommandError::ConversionError)
         ?.decode().map_err(|_| CommandError::ConversionError)?;
     
+    let mut input_path = args.input_path.clone();
     let format: Option<image::ImageFormat> = if args.convert_to_jpg {
+        input_path.set_extension("jpeg");
         Some(ImageFormat::Jpeg)
     } else if args.convert_to_png {
+        input_path.set_extension("png");
         Some(ImageFormat::Png)
     } else if args.convert_to_tiff {
+        input_path.set_extension("tiff");
         Some(ImageFormat::Tiff)
     } else if args.convert_to_webp {
+        input_path.set_extension("webp");
         Some(ImageFormat::WebP)
     } else {
         None
