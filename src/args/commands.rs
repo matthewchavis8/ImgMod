@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fmt, fs};
 
 use crate::args::args::
 {DecodeArgs, 
@@ -8,7 +8,25 @@ RemoveArgs};
 use crate::png::image::{Png, PngError};
 use crate::png::chunk::Chunk;
 
-use super::args::DeleteArgs;
+use super::args::{DeleteArgs, DownloadFromInternetArgs};
+
+#[derive(Debug)]
+pub enum CommandError {
+    DownloadError,
+    DeleteFileError,
+    ConversionError,
+}
+impl fmt::Display for CommandError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            CommandError::DeleteFileError => write!(f, "File does not exist cannot display"),
+            CommandError::ConversionError => write!(f, "Failed to convert file"),
+            CommandError::DownloadError => write!(f, "Failed to download file from the internet"),
+        }
+    }
+}
+
+impl std::error::Error for CommandError {}
 
 pub fn encode(args: &EncodeArgs) -> Result<(),  Box<dyn std::error::Error>> {
     let mut png = Png::from_file(&args.file_path)?;
@@ -70,9 +88,14 @@ pub fn delete_file(args: &DeleteArgs) -> Result<(), Box<dyn std::error::Error>> 
     if file.exists() {
         fs::remove_file(file)?;
         println!("Deleted: {:?}", file);
+        Ok(())
     } else {
         println!("No file at path: {:?}", file);
+        Err(Box::new(CommandError::DeleteFileError))
     }
 
+}
+
+pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
