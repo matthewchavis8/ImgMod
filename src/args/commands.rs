@@ -11,8 +11,12 @@ PrintArgs,
 RemoveArgs};
 use crate::png::image::{Png, PngError};
 use crate::png::chunk::Chunk;
+#[allow(deprecated)]
+use image::io::Reader as ImageReader;
+use image::ImageFormat;
 
-use super::args::{DeleteArgs, DownloadFromInternetArgs};
+
+use super::args::{ConvertArgs, DeleteArgs, DownloadFromInternetArgs};
 extern crate reqwest;
 
 #[derive(Debug)]
@@ -123,4 +127,36 @@ pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), CommandError
 
     println!("Download file to: {:?}", file_path);
     Ok(())
+}
+
+pub fn convert_file(args: &ConvertArgs) -> Result<(), CommandError> {
+
+    let img = ImageReader::open(&args.input_path)
+        .map_err(|_| CommandError::ConversionError)
+        ?.decode().map_err(|_| CommandError::ConversionError)?;
+    
+    let format: Option<image::ImageFormat> = if args.convert_to_jpg {
+        Some(ImageFormat::Jpeg)
+    } else if args.convert_to_png {
+        Some(ImageFormat::Png)
+    } else if args.convert_to_tiff {
+        Some(ImageFormat::Tiff)
+    } else if args.convert_to_webp {
+        Some(ImageFormat::WebP)
+    } else {
+        None
+    };
+    
+    match format {
+        Some(fmt) => {
+            img.save_with_format(&args.input_path, fmt)
+                .map_err(|_| CommandError::ConversionError)?;
+            println!("Image converted and saved to {:?}", args.input_path);
+            return Ok(())
+        }
+        None => { 
+            println!("No conversion was possible");
+            return Err(CommandError::ConversionError)
+        }
+    }
 }

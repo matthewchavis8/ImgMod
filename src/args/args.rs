@@ -82,5 +82,6 @@ pub struct ConvertArgs {
     #[arg(short = 'w')]
     pub convert_to_webp: bool,
 
-    pub file_path: PathBuf,
+    pub input_path: PathBuf,
+    pub output_path: PathBuf
 }
