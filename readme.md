@@ -225,6 +225,3 @@ ImgMod manage convert -w ./images/photo.tiff
 This project is actively being developed as a port from C++ to Rust. Features may change, and contributions are welcome!
 ```
 
----
-
-Let me know if you want to add badges, license info, or a GIF demo for flair!
