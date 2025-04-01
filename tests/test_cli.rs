@@ -117,6 +117,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_install_image_from_internet() {
         TestCli::install_image_from_the_internet();
         
@@ -127,5 +128,27 @@ mod tests {
 
         let check_path = PathBuf::from("images/test.png");
         assert!(!check_path.exists());
+    }
+
+    #[test]
+    #[serial]
+    fn test_convert_image() {
+        TestCli::install_image_from_the_internet();
+        
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(&["manage", "convert", "-j", "images/test.png"]);
+        cmd.assert().success();
+
+        let check_path = PathBuf::from("images/test.jpeg");
+        assert!(check_path.exists());
+
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(&["manage", "delete", "images/test.jpeg"]);
+        cmd.assert().success();
+
+        assert!(!check_path.exists());
+
     }
 }
