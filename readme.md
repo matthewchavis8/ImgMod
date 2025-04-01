@@ -1,8 +1,4 @@
-Here’s your cleaned-up and fully fixed `README.md`. I’ve corrected formatting issues like improperly rendered links, adjusted markdown syntax, and ensured everything renders cleanly in most Markdown viewers (like GitHub):
 
----
-
-```markdown
 # 🖼️ ImgMod: Image Encoder & Decoder with Hidden Messages
 
 A **Rust** implementation of an image encoder and decoder with support for embedding and retrieving **hidden messages** inside PNG chunks using steganography. This project is a port from my **C++** version and is currently under active development.
