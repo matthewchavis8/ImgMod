@@ -1,4 +1,8 @@
+use std::fs::File;
+use std::path::Path;
 use std::{fmt, fs};
+use std::io::copy;
+use reqwest::blocking::get;
 
 use crate::args::args::
 {DecodeArgs, 
@@ -9,12 +13,14 @@ use crate::png::image::{Png, PngError};
 use crate::png::chunk::Chunk;
 
 use super::args::{DeleteArgs, DownloadFromInternetArgs};
+extern crate reqwest;
 
 #[derive(Debug)]
 pub enum CommandError {
     DownloadError,
     DeleteFileError,
     ConversionError,
+    FailedToFindURL,
 }
 impl fmt::Display for CommandError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -22,6 +28,7 @@ impl fmt::Display for CommandError {
             CommandError::DeleteFileError => write!(f, "File does not exist cannot display"),
             CommandError::ConversionError => write!(f, "Failed to convert file"),
             CommandError::DownloadError => write!(f, "Failed to download file from the internet"),
+            CommandError::FailedToFindURL => write!(f, "Failed to find URL from the internet"),
         }
     }
 }
@@ -82,20 +89,38 @@ pub fn print_chunks(args: &PrintArgs) -> Result<(), Box<dyn std::error::Error>> 
     Ok(())
 }
 
-pub fn delete_file(args: &DeleteArgs) -> Result<(), Box<dyn std::error::Error>> {
+pub fn delete_file(args: &DeleteArgs) -> Result<(), CommandError> {
     let file = &args.file_path;
 
     if file.exists() {
-        fs::remove_file(file)?;
+        fs::remove_file(file).map_err(|_| CommandError::DeleteFileError)?;
         println!("Deleted: {:?}", file);
         Ok(())
     } else {
         println!("No file at path: {:?}", file);
-        Err(Box::new(CommandError::DeleteFileError))
+        Err(CommandError::DeleteFileError)
     }
 
 }
 
-pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), Box<dyn std::error::Error>> {
+pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), CommandError> {
+    let res = get(args.url.clone())
+        .map_err(|_| CommandError::DownloadError)?;
+
+    if !res.status().is_success() {
+        return Err(CommandError::FailedToFindURL);
+    }
+
+    let images_dir = Path::new("images");
+    let file_path = images_dir.join(&args.output_file_name);
+
+    let mut output_file = File::create(&file_path)
+        .map_err(|_| CommandError::DownloadError)?;
+
+    let mut image = res;
+    copy(&mut image, &mut output_file)
+        .map_err(|_| CommandError::DownloadError)?;
+
+    println!("Download file to: {:?}", file_path);
     Ok(())
 }

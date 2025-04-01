@@ -63,7 +63,10 @@ pub struct DeleteArgs {
 }
 
 #[derive(Debug, Clone, Args)]
-pub struct DownloadFromInternetArgs {}
+pub struct DownloadFromInternetArgs {
+    pub url: String,
+    pub output_file_name: PathBuf
+}
 
 #[derive(Debug, Clone, Args)]
 pub struct ConvertArgs {

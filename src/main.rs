@@ -41,12 +41,12 @@ fn main() {
             match manage_args.manage_command {
                 ManageCommands::Delete(args) => {
                     if let Err(e) = delete_file(&args) {
-                        eprintln!("Print error: {:?}", e);
+                        eprintln!("Delete error: {:?}", e);
                     }
                 }
                 ManageCommands::Download(args) => {
                     if let Err(e) = download_file(&args) {
-                        eprintln!("Print error: {:?}", e);
+                        eprintln!("Download error: {:?}", e);
                     }
                 }
                 _ => {}
