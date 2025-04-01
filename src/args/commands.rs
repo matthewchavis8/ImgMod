@@ -130,38 +130,38 @@ pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), CommandError
 }
 
 pub fn convert_file(args: &ConvertArgs) -> Result<(), CommandError> {
-
     let img = ImageReader::open(&args.input_path)
-        .map_err(|_| CommandError::ConversionError)
-        ?.decode().map_err(|_| CommandError::ConversionError)?;
+        .map_err(|_| CommandError::ConversionError)?
+        .decode().map_err(|_| CommandError::ConversionError)?;
     
-    let mut input_path = args.input_path.clone();
+    let mut output_path = args.input_path.clone();
+    
     let format: Option<image::ImageFormat> = if args.convert_to_jpg {
-        input_path.set_extension("jpeg");
-        Some(ImageFormat::Jpeg)
+        output_path.set_extension("jpeg");
+        Some(image::ImageFormat::Jpeg)
     } else if args.convert_to_png {
-        input_path.set_extension("png");
-        Some(ImageFormat::Png)
+        output_path.set_extension("png");
+        Some(image::ImageFormat::Png)
     } else if args.convert_to_tiff {
-        input_path.set_extension("tiff");
-        Some(ImageFormat::Tiff)
+        output_path.set_extension("tiff");
+        Some(image::ImageFormat::Tiff)
     } else if args.convert_to_webp {
-        input_path.set_extension("webp");
-        Some(ImageFormat::WebP)
+        output_path.set_extension("webp");
+        Some(image::ImageFormat::WebP)
     } else {
         None
     };
     
     match format {
         Some(fmt) => {
-            img.save_with_format(&args.input_path, fmt)
+            img.save_with_format(&output_path, fmt)
                 .map_err(|_| CommandError::ConversionError)?;
-            println!("Image converted and saved to {:?}", args.input_path);
-            return Ok(())
+            println!("Image converted and saved to {:?}", output_path);
+            Ok(())
         }
         None => { 
-            println!("No conversion was possible");
-            return Err(CommandError::ConversionError)
+            println!("No conversion format selected");
+            Err(CommandError::ConversionError)
         }
     }
 }
