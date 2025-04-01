@@ -1,5 +1,7 @@
 #[cfg(test)] 
 mod tests {
+    use std::path::PathBuf;
+
     use assert_cmd::Command;
     use serial_test::serial;
     use tempfile::tempdir;
@@ -35,6 +37,15 @@ mod tests {
             
             cmd.assert()
                 .stdout("msg: Hello Matt!\n");
+            cmd.assert().success();
+        }
+
+        pub fn install_image_from_the_internet() {
+            let url = "https://www.rust-lang.org/logos/rust-logo-512x512.png".to_string();
+        
+            let mut cmd = Command::cargo_bin("ImgMod")
+            .unwrap();
+            cmd.args(&["manage", "download", &url, "test.png"]);
             cmd.assert().success();
         }
     }
@@ -115,5 +126,18 @@ mod tests {
         cmd.assert().success();
 
         assert!(!file_path.exists());
+    }
+
+    #[test]
+    fn test_install_image_from_internet() {
+        TestCli::install_image_from_the_internet();
+        
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(&["manage", "delete", "images/test.png"]);
+        cmd.assert().success();
+
+        let check_path = PathBuf::from("images/test.png");
+        assert!(!check_path.exists());
     }
 }
