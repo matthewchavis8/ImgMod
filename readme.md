@@ -69,7 +69,7 @@ A PNG (Portable Network Graphics) file is composed of a signature followed by a 
 
 The `ImgMod` tool provides several commands for interacting with PNG files and managing images.
 
-### 🔐 Core Steganography Commands
+### 🔐 Core Commands
 
 #### 1. Encode a Hidden Message
 
