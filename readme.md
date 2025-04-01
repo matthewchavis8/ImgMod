@@ -1,7 +1,7 @@
 
 # 🖼️ ImgMod: Image Encoder & Decoder with Hidden Messages
 
-A **Rust** implementation of an image encoder and decoder with support for embedding and retrieving **hidden messages** inside PNG chunks using steganography. This project is a port from my **C++** version and is currently under active development.
+A **Rust** implementation of an image encoder and decoder with support for embedding and retrieving **hidden messages** inside image chunks. This project is a port from my **C++** version and is currently under active development.
 
 ---
 
