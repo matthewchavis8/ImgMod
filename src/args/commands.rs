@@ -13,8 +13,6 @@ use crate::png::image::{Png, PngError};
 use crate::png::chunk::Chunk;
 #[allow(deprecated)]
 use image::io::Reader as ImageReader;
-use image::ImageFormat;
-
 
 use super::args::{ConvertArgs, DeleteArgs, DownloadFromInternetArgs};
 extern crate reqwest;
@@ -130,8 +128,9 @@ pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), CommandError
 }
 
 pub fn convert_file(args: &ConvertArgs) -> Result<(), CommandError> {
+    #[allow(deprecated)]
     let img = ImageReader::open(&args.input_path)
-        .map_err(|_| CommandError::ConversionError)?
+        .map_err(|_| CommandError::FailedToFindURL)?
         .decode().map_err(|_| CommandError::ConversionError)?;
     
     let mut output_path = args.input_path.clone();
