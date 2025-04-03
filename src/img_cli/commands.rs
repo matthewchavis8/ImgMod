@@ -4,7 +4,7 @@ use std::{fmt, fs};
 use std::io::copy;
 use reqwest::blocking::get;
 
-use crate::args::args::
+use crate::img_cli::args::
 {DecodeArgs, 
 EncodeArgs, 
 PrintArgs, 
@@ -18,6 +18,7 @@ use super::args::{ConvertArgs, DeleteArgs, DownloadFromInternetArgs};
 extern crate reqwest;
 
 #[derive(Debug)]
+#[allow(dead_code)] // NOTE to self: fix this stupid linting issue?
 pub enum CommandError {
     DownloadError,
     DeleteFileError,
@@ -37,6 +38,7 @@ impl fmt::Display for CommandError {
 
 impl std::error::Error for CommandError {}
 
+#[allow(dead_code)]
 pub fn encode(args: &EncodeArgs) -> Result<(),  Box<dyn std::error::Error>> {
     let mut png = Png::from_file(&args.file_path)?;
     let chunk = Chunk::from_strings(&args.chunk_type, &args.message)?;
@@ -51,6 +53,7 @@ pub fn encode(args: &EncodeArgs) -> Result<(),  Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[allow(dead_code)]
 pub fn decode(args: &DecodeArgs) -> Result<(), Box<dyn std::error::Error>> {
     let png = Png::from_file(&args.file_path)?;
     
@@ -63,6 +66,7 @@ pub fn decode(args: &DecodeArgs) -> Result<(), Box<dyn std::error::Error>> {
     }
 }
 
+#[allow(dead_code)]
 pub fn remove(args: &RemoveArgs) -> Result<(), Box<dyn std::error::Error>> {
     let mut png = Png::from_file(&args.file_path)?;
     png.remove_chunk(&args.chunk_type)?;
@@ -72,6 +76,7 @@ pub fn remove(args: &RemoveArgs) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[allow(dead_code)]
 pub fn print_chunks(args: &PrintArgs) -> Result<(), Box<dyn std::error::Error>> {
     let png = Png::from_file(&args.file_path)?;
     println!(
@@ -91,7 +96,8 @@ pub fn print_chunks(args: &PrintArgs) -> Result<(), Box<dyn std::error::Error>> 
     Ok(())
 }
 
-pub fn delete_file(args: &DeleteArgs) -> Result<(), CommandError> {
+#[allow(dead_code)]
+pub fn delete_file(args: &DeleteArgs) -> Result<(), Box<dyn std::error::Error>> {
     let file = &args.file_path;
 
     if file.exists() {
@@ -100,17 +106,18 @@ pub fn delete_file(args: &DeleteArgs) -> Result<(), CommandError> {
         Ok(())
     } else {
         println!("No file at path: {:?}", file);
-        Err(CommandError::DeleteFileError)
+        Err(CommandError::DeleteFileError)?
     }
 
 }
 
-pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), CommandError> {
+#[allow(dead_code)]
+pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), Box<dyn std::error::Error>> {
     let res = get(args.url.clone())
         .map_err(|_| CommandError::DownloadError)?;
 
     if !res.status().is_success() {
-        return Err(CommandError::FailedToFindURL);
+        Err(CommandError::FailedToFindURL)?;
     }
 
     let images_dir = Path::new("images");
@@ -127,7 +134,8 @@ pub fn download_file(args: &DownloadFromInternetArgs) -> Result<(), CommandError
     Ok(())
 }
 
-pub fn convert_file(args: &ConvertArgs) -> Result<(), CommandError> {
+#[allow(dead_code)]
+pub fn convert_file(args: &ConvertArgs) -> Result<(), Box<dyn std::error::Error>> {
     #[allow(deprecated)]
     let img = ImageReader::open(&args.input_path)
         .map_err(|_| CommandError::FailedToFindURL)?
@@ -160,7 +168,7 @@ pub fn convert_file(args: &ConvertArgs) -> Result<(), CommandError> {
         }
         None => { 
             println!("No conversion format selected");
-            Err(CommandError::ConversionError)
+            Err(CommandError::ConversionError)?
         }
     }
 }
