@@ -145,8 +145,22 @@ mod tests {
         cmd.assert().success();
 
         assert!(!check_path.exists());
-
     }
+    /*
+     *  Ok how to fix so 
+     *  step 1: Fetch image from the internet as a png
+     *  step 2: converting the png into a jpeg from the internet 
+     *  step 3: delete old png file
+     *  step 4: check if old png is gone
+     *  step 5: take the new jpeg and convert it to a png
+     *  step 6: delete old jpeg
+     *  step 7: check if jpeg path does not exist
+     *  step 8: check if png path exist
+     *  step 9: delete png
+     *  step 10: check if path does not exist
+     * 
+     *
+     * */
 
     #[test]
     #[serial]
@@ -164,6 +178,50 @@ mod tests {
         let mut cmd = Command::cargo_bin("ImgMod")
         .unwrap();
         cmd.args(["manage", "delete", "images/test.jpeg"]);
+        cmd.assert().success();
+
+        assert!(!check_path.exists());
+
+    }
+
+    #[test]
+    #[serial]
+    fn test_convert_image_to_tiff() {
+        TestCli::install_image_from_the_internet();
+        
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(["manage", "convert", "-t", "images/test.png"]);
+        cmd.assert().success();
+
+        let check_path = PathBuf::from("images/test.tiff");
+        assert!(check_path.exists());
+
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(["manage", "delete", "images/test.tiff"]);
+        cmd.assert().success();
+
+        assert!(!check_path.exists());
+
+    }
+
+    #[test]
+    #[serial]
+    fn test_convert_image_to_webp() {
+        TestCli::install_image_from_the_internet();
+        
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(["manage", "convert", "-w", "images/test.png"]);
+        cmd.assert().success();
+
+        let check_path = PathBuf::from("images/test.webp");
+        assert!(check_path.exists());
+
+        let mut cmd = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd.args(["manage", "delete", "images/test.webp"]);
         cmd.assert().success();
 
         assert!(!check_path.exists());
