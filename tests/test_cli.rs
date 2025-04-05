@@ -1,6 +1,6 @@
 #[cfg(test)] 
 mod tests {
-    use std::path::{Path, PathBuf};
+    use std::path::PathBuf;
 
     use assert_cmd::Command;
     use serial_test::serial;
