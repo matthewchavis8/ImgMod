@@ -1,6 +1,6 @@
 #[cfg(test)] 
 mod tests {
-    use std::path::PathBuf;
+    use std::path::{Path, PathBuf};
 
     use assert_cmd::Command;
     use serial_test::serial;
@@ -131,20 +131,39 @@ mod tests {
     fn test_convert_image_to_png() {
         TestCli::install_image_from_the_internet();
         
-        let mut cmd = Command::cargo_bin("ImgMod")
+        let check_path_to_png = PathBuf::from("images/test.png");
+        assert!(check_path_to_png.exists());
+
+        let mut cmd1 = Command::cargo_bin("ImgMod")
         .unwrap();
-        cmd.args(["manage", "convert", "-j", "images/test.png"]);
-        cmd.assert().success();
+        cmd1.args(["manage", "convert", "-j", "images/test.png"]);
+        cmd1.assert().success();
 
-        let check_path = PathBuf::from("images/test.jpeg");
-        assert!(check_path.exists());
-
-        let mut cmd = Command::cargo_bin("ImgMod")
+        let mut cmd2 = Command::cargo_bin("ImgMod")
         .unwrap();
-        cmd.args(["manage", "delete", "images/test.jpeg"]);
-        cmd.assert().success();
+        cmd2.args(["manage", "delete","images/test.png"]);
+        cmd2.assert().success();
+        
+        let check_path_to_jpeg = PathBuf::from("images/test.jpeg");
+        assert!(check_path_to_jpeg.exists());
 
-        assert!(!check_path.exists());
+        let mut cmd3 = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd3.args(["manage", "convert", "-p", "images/test.jpeg"]);
+        cmd3.assert().success();
+
+        let mut cmd4 = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd4.args(["manage", "delete", "images/test.png"]);
+        cmd4.assert().success();
+
+        let mut cmd5 = Command::cargo_bin("ImgMod")
+        .unwrap();
+        cmd5.args(["manage", "delete", "images/test.jpeg"]);
+        cmd5.assert().success();
+
+        assert!(!check_path_to_png.exists());
+        assert!(!check_path_to_jpeg.exists());
     }
     /*
      *  Ok how to fix so 
