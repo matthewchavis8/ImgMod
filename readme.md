@@ -27,6 +27,18 @@ A PNG (Portable Network Graphics) file is composed of a signature followed by a 
 
 ---
 
+## Example of a PNG File Structure
+
+Genger.png:
+![Gengar](https://github.com/user-attachments/assets/c0d8ea4e-c960-4b2e-b808-9b592e310e6f)
+**Genger.png File Structure**
+```sh
+ File: ./images/Gengar.png, Size: 95013
+  chunk#0{ chunk_type: IHDR, data_length: 13}
+  chunk#1{ chunk_type: IDAT, data_length: 94956}
+  chunk#2{ chunk_type: IEND, data_length: 0}
+```
+
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
