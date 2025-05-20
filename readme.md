@@ -1,11 +1,11 @@
 
-# 🖼️ ImgMod: Image Encoder & Decoder with Hidden Messages
+# ImgMod: Image Encoder & Decoder with Hidden Messages
 
 A **Rust** implementation of an image encoder and decoder with support for embedding and retrieving **hidden messages** inside image chunks. This project is a port from my **C++** version and is currently under active development.
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Read & Write PNG Files:** Manipulate PNG files at the chunk level.  
 - **Dynamic Chunk Handling:** Extract and modify image chunks easily.  
@@ -16,7 +16,7 @@ A **Rust** implementation of an image encoder and decoder with support for embed
 
 ---
 
-## 🏗️ Understanding PNG File Structure
+## Understanding PNG File Structure
 
 A PNG (Portable Network Graphics) file is composed of a signature followed by a series of **chunks**. Each chunk contains:
 
@@ -39,7 +39,7 @@ Genger.png:
   chunk#2{ chunk_type: IEND, data_length: 0}
 ```
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 
@@ -77,11 +77,11 @@ Genger.png:
 
 ---
 
-## 💻 Usage (CLI Examples)
+## Usage (CLI Examples)
 
 The `ImgMod` tool provides several commands for interacting with PNG files and managing images.
 
-### 🔐 Core Commands
+### Core Commands
 
 #### 1. Encode a Hidden Message
 
@@ -167,7 +167,7 @@ ImgMod remove ./images/Gengar.png maTt
 
 ---
 
-### 🧰 `manage` Subcommand
+### `manage` Subcommand
 
 Provides additional file utilities.
 
@@ -228,12 +228,5 @@ ImgMod manage convert -j ./images/my_image.png
 
 # Convert to WebP
 ImgMod manage convert -w ./images/photo.tiff
-```
-
----
-
-## 🚧 Development Status
-
-This project is actively being developed as a port from C++ to Rust. Features may change, and contributions are welcome!
 ```
 
